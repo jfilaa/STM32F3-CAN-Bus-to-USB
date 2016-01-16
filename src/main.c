@@ -133,7 +133,7 @@ int main(void)
     STM_EVAL_LEDOff(LED10);
     while(GPIO_ReadInputDataBit(USER_BUTTON_GPIO_PORT, USER_BUTTON_PIN) != Bit_SET){}
     
-#define _SEND_CAN_MSG_USB_    
+//#define _SEND_CAN_MSG_USB_    
 #ifdef _SEND_CAN_MSG_USB_
     
     CanRxMsg RxMessage;
@@ -151,21 +151,21 @@ int main(void)
     
     CanTxMsg TxMessage;
     
+    // 0x02C1 40 00 00 00 04	Pravý
+    // 0x02C1 20 00 00 00 04	Levý
+    
     /* Transmit Structure preparation */
-    TxMessage.StdId = 0x359;
+    TxMessage.StdId = 0x02C1;
     TxMessage.ExtId = 0x00;
     TxMessage.RTR = CAN_RTR_DATA;
     TxMessage.IDE = CAN_ID_STD;
-    TxMessage.DLC = 8; // délka dat
+    TxMessage.DLC = 5; // délka dat
 
-    TxMessage.Data[0] = 0x1F;
-    TxMessage.Data[1] = 0x01;
+    TxMessage.Data[0] = 0x20;
+    TxMessage.Data[1] = 0x00;
     TxMessage.Data[2] = 0x00;
     TxMessage.Data[3] = 0x00;
-    TxMessage.Data[4] = 0x00;
-    TxMessage.Data[5] = 0x00;
-    TxMessage.Data[6] = 0x00;
-    TxMessage.Data[7] = 0x00;
+    TxMessage.Data[4] = 0x04;
     CAN_Transmit(CAN1, &TxMessage);
 #endif
     

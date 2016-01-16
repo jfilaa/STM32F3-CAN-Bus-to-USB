@@ -129,6 +129,81 @@ void Set_CAN(void)
 #endif
   CAN_Init(CANx, &CAN_InitStructure);
 
+//#define _Use_Filter_
+  
+#ifdef _Use_Filter_
+  /* CAN filter init */
+  
+ #if 1
+  
+  // each value of whitelist should be shifted 5 times to left
+  
+  CAN_FilterInitStructure.CAN_FilterNumber = 0;
+  CAN_FilterInitStructure.CAN_FilterMode = CAN_FilterMode_IdList;
+  CAN_FilterInitStructure.CAN_FilterScale = CAN_FilterScale_16bit;
+  CAN_FilterInitStructure.CAN_FilterIdHigh = 0x054B << 5;    // dálkomìry
+  CAN_FilterInitStructure.CAN_FilterIdLow = 0x0621 << 5;     // palivo
+  CAN_FilterInitStructure.CAN_FilterMaskIdHigh = 0x03C3 << 5;     // natoèení volantu
+  CAN_FilterInitStructure.CAN_FilterMaskIdLow = 0x0359 << 5;     // rychlost
+  CAN_FilterInitStructure.CAN_FilterActivation = ENABLE;  
+  CAN_FilterInit(&CAN_FilterInitStructure);
+  
+  CAN_FilterInitStructure.CAN_FilterNumber++;
+  CAN_FilterInitStructure.CAN_FilterMode = CAN_FilterMode_IdList;
+  CAN_FilterInitStructure.CAN_FilterScale = CAN_FilterScale_16bit;
+  CAN_FilterInitStructure.CAN_FilterIdHigh = 0x0351 << 5;    // rychlost
+  CAN_FilterInitStructure.CAN_FilterIdLow = 0x065D << 5;     // Odometr + èas
+  CAN_FilterInitStructure.CAN_FilterMaskIdHigh = 0 << 5;
+  CAN_FilterInitStructure.CAN_FilterMaskIdLow = 0 << 5;
+  CAN_FilterInitStructure.CAN_FilterActivation = ENABLE;  
+  CAN_FilterInit(&CAN_FilterInitStructure);
+  
+ #else
+  
+  CAN_FilterInitStructure.CAN_FilterNumber = 0;
+  CAN_FilterInitStructure.CAN_FilterMode = CAN_FilterMode_IdList;
+  CAN_FilterInitStructure.CAN_FilterScale = CAN_FilterScale_16bit;
+  CAN_FilterInitStructure.CAN_FilterIdLow = 0x054B;     // dálkomìry
+  CAN_FilterInitStructure.CAN_FilterActivation = ENABLE;  
+  CAN_FilterInit(&CAN_FilterInitStructure);
+  
+  CAN_FilterInitStructure.CAN_FilterNumber++;
+  CAN_FilterInitStructure.CAN_FilterMode = CAN_FilterMode_IdList;
+  CAN_FilterInitStructure.CAN_FilterScale = CAN_FilterScale_16bit;
+  CAN_FilterInitStructure.CAN_FilterIdLow = 0x0621;     // palivo
+  CAN_FilterInitStructure.CAN_FilterActivation = ENABLE;
+  CAN_FilterInit(&CAN_FilterInitStructure);
+  
+  CAN_FilterInitStructure.CAN_FilterNumber++;
+  CAN_FilterInitStructure.CAN_FilterMode = CAN_FilterMode_IdList;
+  CAN_FilterInitStructure.CAN_FilterScale = CAN_FilterScale_16bit;
+  CAN_FilterInitStructure.CAN_FilterIdLow = 0x03C3;     // natoèení volantu
+  CAN_FilterInitStructure.CAN_FilterActivation = ENABLE;
+  CAN_FilterInit(&CAN_FilterInitStructure);
+  
+  CAN_FilterInitStructure.CAN_FilterNumber++;
+  CAN_FilterInitStructure.CAN_FilterMode = CAN_FilterMode_IdList;
+  CAN_FilterInitStructure.CAN_FilterScale = CAN_FilterScale_16bit;
+  CAN_FilterInitStructure.CAN_FilterIdLow = 0x0359;     // rychlost
+  CAN_FilterInitStructure.CAN_FilterActivation = ENABLE;
+  CAN_FilterInit(&CAN_FilterInitStructure);
+  
+  CAN_FilterInitStructure.CAN_FilterNumber++;
+  CAN_FilterInitStructure.CAN_FilterMode = CAN_FilterMode_IdList;
+  CAN_FilterInitStructure.CAN_FilterScale = CAN_FilterScale_16bit;
+  CAN_FilterInitStructure.CAN_FilterIdLow = 0x0351;     // rychlost
+  CAN_FilterInitStructure.CAN_FilterActivation = ENABLE;
+  CAN_FilterInit(&CAN_FilterInitStructure);
+  
+  CAN_FilterInitStructure.CAN_FilterNumber++;
+  CAN_FilterInitStructure.CAN_FilterMode = CAN_FilterMode_IdList;
+  CAN_FilterInitStructure.CAN_FilterScale = CAN_FilterScale_16bit;
+  CAN_FilterInitStructure.CAN_FilterIdLow = 0x065D;     // Odometr + èas
+  CAN_FilterInitStructure.CAN_FilterActivation = ENABLE;
+  CAN_FilterInit(&CAN_FilterInitStructure);
+ #endif
+#else
+  
   /* CAN filter init */
   CAN_FilterInitStructure.CAN_FilterNumber = 0;
   CAN_FilterInitStructure.CAN_FilterMode = CAN_FilterMode_IdMask;
@@ -140,6 +215,8 @@ void Set_CAN(void)
   CAN_FilterInitStructure.CAN_FilterFIFOAssignment = 0;
   CAN_FilterInitStructure.CAN_FilterActivation = ENABLE;
   CAN_FilterInit(&CAN_FilterInitStructure);
+#endif
+
 
   /* Transmit Structure preparation */
   TxMessage.StdId = 0x321;
